@@ -1,7 +1,7 @@
 use core::fmt;
 use std::collections::LinkedList;
 use std::fmt::{write, Display};
-
+use crate::def::bit_queue::BitQueue;
 pub struct DCell{
     pub width : (u32,u32),
     pub height : (u32,u32),
@@ -16,16 +16,18 @@ fn is_any_cell_divisable(list : &LinkedList<DCell>) -> bool
 {
     list.iter().any(|DCell{width : (left, right),height : (bottom, top), num_elems : _}|{ right - left > 0 || top - bottom > 0})
 }
-pub fn decode_planar_segment(mut a : LinkedList<usize>, bounding_box : ((u32, u32), (u32, u32))) -> LinkedList<(u32, u32)>
+pub fn decode_planar_segment(mut a : BitQueue, bounding_box : ((u32, u32), (u32, u32))) -> LinkedList<(u32, u32)>
 {
     let mut queue : LinkedList<DCell> = LinkedList::new();
-    queue.push_back(DCell{width : bounding_box.0, height : bounding_box.1, num_elems : a.pop_front().unwrap()});
+    queue.push_back(DCell{width : bounding_box.0, height : bounding_box.1, num_elems : a.pop_front(32) as usize});
+
     while is_any_cell_divisable(&queue)
     {
         let DCell{width : (left, right),height : (bottom, top), num_elems : n} = queue.pop_front().unwrap();
         if right - left > 0 || top - bottom > 0
         {
-            let points_on_segment_l = a.pop_front().unwrap();
+
+            let points_on_segment_l = a.pop_front(n.ilog2() as usize + 1) as usize;
             let points_on_segment_r = n - points_on_segment_l;
             let s0 : DCell;
             let s1 : DCell;
@@ -52,7 +54,6 @@ pub fn decode_planar_segment(mut a : LinkedList<usize>, bounding_box : ((u32, u3
         {
             queue.push_back(DCell{width : (left, right),height : (bottom, top), num_elems : n});
         }
-        print!("\n \n");
     }
 
     LinkedList::from_iter(queue.into_iter().map(|DCell{width : (left, _),height : (bottom, _) ,num_elems : _}|{(left, bottom)}))
