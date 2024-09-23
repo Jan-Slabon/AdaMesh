@@ -1,4 +1,4 @@
-use std::{collections::LinkedList};
+use std::collections::LinkedList;
 use crate::def::bit_queue::BitQueue;
 pub struct Cell{
     pub width : (u32,u32),

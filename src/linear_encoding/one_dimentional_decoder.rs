@@ -1,6 +1,6 @@
 use core::fmt;
 use std::collections::LinkedList;
-use std::fmt::{write, Display};
+use std::fmt::Display;
 struct DSegment
 {
     size : (u32, u32),

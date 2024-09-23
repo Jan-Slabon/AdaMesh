@@ -1,6 +1,5 @@
-use core::fmt;
 use std::collections::LinkedList;
-use std::fmt::{write, Display};
+use std::fmt::Display;
 use crate::def::bit_queue::BitQueue;
 pub struct DCell{
     pub width : (u32,u32),
