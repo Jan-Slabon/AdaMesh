@@ -62,7 +62,7 @@ pub fn encode_cubical_segment(cell : Cell) -> BitQueue
                 s1.elems.push_front((*width, *height, *depth)) 
             }
         }
-        encoding.push_back(s0.elems.len() as u32, (current_cell.elems.len().ilog2() + 1) as usize);
+        encoding.push_back(s0.elems.len() as u32, ((current_cell.elems.len()).ilog2() + 1) as usize);
         if s0.elems.len() > 0 && cube_area(&s0) > 1
         {
             queue.push_back(s0);

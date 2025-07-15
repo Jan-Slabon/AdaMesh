@@ -8,7 +8,7 @@ pub struct BitQueue{
 impl BitQueue{
     pub fn push_back(&mut self, mut value : u32, mut size : usize)
     {
-        assert!((value as u64) < (2 as u64).pow(size as u32));
+        assert!((value as u64) <= (2 as u64).pow(size as u32));
         while self.write_offset as usize + size >= 8
         {
             let offset_value : u8 = (value as u8) << self.write_offset;
